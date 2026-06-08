@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Parcel Pilot: Navigate Your Courier Smoothly</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+<!-- html2pdf lib -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<style>
+  /* --- Full Original CSS --- */
+ body,html {
+    margin: 0; padding:0;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(120deg, #4f8cff 0%, #94ffe3 120%);
+    color: #1c263b;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  a {
+    text-decoration: none;
+    color: #246fce;
+    font-weight: 600;
+    transition: color 0.15s;
+  }
+  a:hover {
+    color: #01f0b9;
+  }
+  .container-wide {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    position: relative;
+    z-index: 2;
+  }
+  #signup-container {
+    position: relative;
+    z-index: 1; 
+  }
+  #homeHero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 80px 20px 60px;
+  }
+  #homeHero .hero-text {
+    max-width: 600px;
+  }
+  #homeHero h1 {
+    font-size: 3.6rem;
+    font-weight: 800;
+    color: #164174;
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+  #homeHero p {
+    font-size: 1.25rem;
+    color: #264270dd;
+    line-height: 1.5;
+    margin-bottom: 2.5rem;
+  }
+  #heroStartBtn {
+    background: linear-gradient(90deg,#246fce 60%,#2cdddd 100%);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    padding: 1.1rem 3rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 22px #2cdddd88;
+    transition: all 0.25s ease;
+  }
+  #heroStartBtn:hover {
+    background: linear-gradient(90deg, #28a0e6 65%, #37f2dd 105%);
+    box-shadow: 0 9px 30px #2cddddcc;
+    transform: translateY(-3px) scale(1.03);
+  }
+  #homeHero img {
+    max-width: 380px;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 14px 54px #186abf33;
+  }
+  #featuresSection {
+    background: #f5fbff;
+    padding: 60px 20px;
+    text-align: center;
+    box-shadow: inset 0 2px 8px #3f7bbe1a;
+    position: relative;
+    z-index: 2;
+  }
+  #featuresSection h2 {
+    color: #164174;
+    font-weight: 700;
+    font-size: 2.8rem;
+    margin-bottom: 40px;
+  }
+  .features-grid {
+    display: flex;
+    justify-content: center;
+    gap: 52px;
+    flex-wrap: wrap;
+  }
+  .feature-item {
+    max-width: 260px;
+    flex: 1;
+    background: white;
+    padding: 28px 22px;
+    border-radius: 15px;
+    box-shadow: 0 6px 22px #3f7bbe1a;
+    transition: box-shadow 0.3s ease;
+  }
+  .feature-item:hover {
+    box-shadow: 0 12px 48px #2584ed88;
+  }
+  .feature-icon {
+    font-size: 42px;
+    color: #246fce;
+    margin-bottom: 14px;
+  }
+  .feature-title {
+    font-weight: 700;
+    font-size: 1.18rem;
+    margin-bottom: 10px;
+    color: #164174;
+  }
+  .feature-desc {
+    color: #546e9f;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  #aboutHowSection {
+    max-width: 900px;
+    margin: 0 auto 140px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+  }
+  .section-block {
+    margin-bottom: 50px;
+  }
+  .section-block h3 {
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #164174;
+  }
+  .section-block p {
+    font-size: 1.1rem;
+    line-height: 1.55;
+    color: #3b4a6b;
+    font-weight: 500;
+  }
+  .fade-out {
+    animation: fadeOut 0.5s forwards;
+  }
+  .fade-in {
+    animation: fadeIn 0.5s forwards;
+  }
+  @keyframes fadeOut {
+    to { opacity: 0; visibility: hidden; }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; visibility: hidden; }
+    to { opacity: 1; visibility: visible; }
+  }
+  
+  /* Fixed Background Animation */
+  #courier-animation-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.3;
+  }
+  
+  #courier-animation-bg svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .road-path {
+    fill: none;
+    stroke: #48a6e9;
+    stroke-width: 8;
+    stroke-linecap: round;
+    opacity: 0.4;
+  }
+  
+  .vehicle-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .floating-icon {
+    width: 30px;
+    height: 30px;
+    opacity: 0.6;
+  }
+  
+  @media (max-width: 600px) {
+    .vehicle-icon {
+      width: 30px;
+      height: 30px;
+    }
+    .floating-icon {
+      width: 25px;
+      height: 25px;
+    }
+  }
+  
+  .center-box {
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+  }
+  .app-card {
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 8px 32px 0 rgba(31,38,135,0.15);
+    border-radius: 22px;
+    padding: 3rem 2.5rem 2rem 2.5rem;
+    max-width: 450px;
+    min-width: 340px;
+    text-align: center;
+    animation: floatIn 0.8s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+    margin: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  @keyframes floatIn {
+    0% { opacity:0; transform: translateY(30px);}
+    100% { opacity:1; transform: none;}
+  }
+  
+  /* Enhanced Signup Section */
+  .signup-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.92) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 25px 60px rgba(31,38,135,0.2);
+    border-radius: 28px;
+    padding: 3.5rem 3rem 2.5rem 3rem;
+    max-width: 520px;
+    min-width: 400px;
+    text-align: center;
+    animation: signupEntrance 1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    margin: 24px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  .signup-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(79, 140, 255, 0.05), transparent);
+    animation: shimmer 3s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  
+  @keyframes signupEntrance {
+    0% { 
+      opacity: 0; 
+      transform: translateY(50px) scale(0.9);
+      filter: blur(10px);
+    }
+    60% {
+      opacity: 0.8;
+      transform: translateY(-10px) scale(1.02);
+      filter: blur(2px);
+    }
+    100% { 
+      opacity: 1; 
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+  
+  .signup-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #246fce 0%, #2cdddd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.8rem;
+    letter-spacing: -1px;
+    animation: titleGlow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes titleGlow {
+    0% { filter: drop-shadow(0 0 5px rgba(36, 111, 206, 0.3)); }
+    100% { filter: drop-shadow(0 0 15px rgba(44, 221, 221, 0.4)); }
+  }
+  
+  .signup-subtitle {
+    color: #546e9f;
+    font-size: 1.15rem;
+    margin-bottom: 2.5rem;
+    font-weight: 500;
+    opacity: 0;
+    animation: slideInUp 0.8s ease-out 0.3s forwards;
+  }
+  
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .form-group {
+    position: relative;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: slideInUp 0.8s ease-out forwards;
+  }
+  
+  .form-group:nth-child(3) { animation-delay: 0.1s; }
+  .form-group:nth-child(4) { animation-delay: 0.2s; }
+  .form-group:nth-child(5) { animation-delay: 0.3s; }
+  .form-group:nth-child(6) { animation-delay: 0.4s; }
+  
+  .enhanced-input {
+    width: 100%;
+    padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+    border: 2px solid rgba(36, 111, 206, 0.1);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #1c263b;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+    outline: none;
+  }
+  
+  .enhanced-input:focus {
+    border-color: #246fce;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 4px rgba(36, 111, 206, 0.08), 0 8px 25px rgba(36, 111, 206, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .enhanced-input::placeholder {
+    color: #8295b8;
+    font-weight: 400;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.3rem;
+    color: #8295b8;
+    transition: color 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .form-group:focus-within .input-icon {
+    color: #246fce;
+    animation: iconBounce 0.6s ease;
+  }
+  
+  @keyframes iconBounce {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.1); }
+  }
+  
+  .signup-btn {
+    width: 100%;
+    padding: 1.3rem 2rem;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #246fce 0%, #2cdddd 100%);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 25px rgba(36, 111, 206, 0.25);
+    position: relative;
+    overflow: hidden;
+    margin-top: 1rem;
+    opacity: 0;
+    animation: slideInUp 0.8s ease-out 0.5s forwards;
+  }
+  
+  .signup-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  .signup-btn:hover::before {
+    left: 100%;
+  }
+  
+  .signup-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(36, 111, 206, 0.4);
+    background: linear-gradient(135deg, #2980e6 0%, #37f2dd 100%);
+  }
+  
+  .signup-btn:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+  
+  .floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  .floating-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .floating-circle:nth-child(1) {
+    width: 40px;
+    height: 40px;
+    background: #246fce;
+    top: 20%;
+    right: 10%;
+    animation-delay: 0s;
+  }
+  
+  .floating-circle:nth-child(2) {
+    width: 60px;
+    height: 60px;
+    background: #2cdddd;
+    bottom: 20%;
+    left: 5%;
+    animation-delay: 2s;
+  }
+  
+  .floating-circle:nth-child(3) {
+    width: 30px;
+    height: 30px;
+    background: #01f0b9;
+    top: 40%;
+    right: 20%;
+    animation-delay: 4s;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+  
+  .big-logo {
+    font-size: 4rem;
+    margin-bottom: 0.6rem;
+  }
+  .welcome-title {
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: #183a79;
+    letter-spacing: -1px;
+  }
+  .welcome-desc {
+    color: #444;
+    font-size: 1.1rem;
+    margin: 1.2rem 0 2rem 0;
+  }
+  .primary-btn {
+    display: inline-block;
+    padding: 0.95rem 2.2rem;
+    border-radius: 40px;
+    border: none;
+    background: linear-gradient(90deg,#2999fa,#01f0b9);
+    color: white;
+    font-size: 1.10rem;
+    font-weight:bold;
+    letter-spacing: 1px;
+    transition: all 0.18s;
+    box-shadow: 0 4px 12px rgba(41,153,250,0.07);
+    cursor: pointer;
+  }
+  .primary-btn:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 8px 20px rgba(41,153,250,0.20);
+    transform: translateY(-2px) scale(1.025);
+  }
+  .hidden { display: none; }
+  .container, .form-box {
+    max-width: 700px;
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    animation: floatIn 0.5s both;
+    position: relative;
+    z-index: 1;
+  }
+  h1, h2 {
+    text-align: center;
+    color: #183a79;
+  }
+  input, select, button {
+    padding: 0.7rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+    box-sizing: border-box;
+    font-size: 1rem;
+  }
+  button {
+    background: #2999fa;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  button:hover { filter: brightness(1.08); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: #f9fbfc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 0.75rem;
+    border: 1px solid #dee1e2;
+    text-align: center;
+  }
+  th { background-color: #2999fa; color: white; }
+  .status-step {
+    padding: 0.6rem;
+    border-radius: 5px;
+    margin: 0.4rem 0;
+  }
+  .done { background: #d4edda; color: #155724; font-weight: bold; }
+  .active { background: #fff3cd; color: #856404; font-weight: bold; }
+  .pending { background: #f8d7da; color: #721c24; }
+  @media (max-width: 600px) {
+    .container, .form-box, .app-card { padding: 1rem; min-width: unset; width: 95%; }
+    .app-card { max-width: 99vw; }
+    .signup-card { 
+      padding: 2rem 1.5rem; 
+      min-width: unset; 
+      max-width: 95vw; 
+      margin: 12px;
+    }
+    .signup-title { font-size: 2.2rem; }
+    .enhanced-input { padding: 1rem 1.2rem 1rem 3rem; }
+    table, th, td { font-size:0.95rem; }
+  }
+  /* ==== Enhanced Receipt Style ==== */
+.receipt-sheet {
+  background: linear-gradient(135deg, #f5fafd 60%, #deedfc 100%);
+  padding: 36px 32px 32px 32px;
+  border-radius: 22px;
+  max-width: 430px;
+  box-shadow: 0 9px 38px #1ea5fe25, 0 2px 12px #2999fa16;
+  border: 2.5px solid #2999fa;
+  color: #195997;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  transition: box-shadow 0.25s;
+  position: relative;
+  overflow: hidden;
+  margin: 30px auto 16px;
+}
+.receipt-sheet:before {
+  content: '';
+  position: absolute;
+  top:0; left:0; right:0; height: 8px;
+  background: linear-gradient(90deg,#01f0b9 0,#48a6e9 100%);
+  opacity:.22;
+  border-radius: 22px 22px 0 0;
+}
+.receipt-header {
+  text-align: center;
+  margin-bottom: 13px;
+}
+.receipt-logo {
+  max-width:80px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px #2999fa3c;
+  margin-bottom: 9px;
+}
+.receipt-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #195997;
+  letter-spacing: .06em;
+  margin-bottom: 4px;
+ -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.barcode {
+  width:130px; height:36px;
+  margin:21px auto 6px auto;
+  border-radius: 6px;
+  box-shadow:0 2px 13px #2999fa23;
+  background-color:#e1f6fa;
+}
+.receipt-divider {
+  border-top: 1.5px dashed #1791e8;
+  margin: 16px 0 18px 0;
+  border-bottom:none;
+}
+.receipt-table {
+  width: 100%;
+  background:#f2faff;
+  border-radius:5px;
+  font-size:1.07rem;
+  box-shadow:0 1px 6px #2999fa0a;
+}
+.receipt-table td {
+  border:none;padding: 7px 6px 6px 9px;
+}
+.receipt-table .label {
+  color:#1676c6;
+  font-weight:600;
+  font-family:'Inter',sans-serif;
+  letter-spacing:.02em;
+}
+.receipt-table .value {
+  color:#155194;
+  font-weight:700;
+  text-align:right;
+}
+.receipt-detailbox {
+  background:#e8f4fc;
+  border-radius:8px;
+  color:#114882;
+  font-size:1rem;
+  padding: 12px 15px 9px 15px;
+  margin:12px 0 10px 0;
+  box-shadow:0 2px 12px #1ea5fe08;
+}
+.animated-stamp {
+  border:2.5px solid #01f0b9;
+  border-radius: 12px;
+  display:inline-block;
+  padding:7px 30px;
+  background:linear-gradient(300deg,#2cdddd0d 63%,#4f8cff0d 100%);
+  color: #14c196;
+  font-size:1.04rem;
+  font-weight: 900;
+  letter-spacing: 2.7px;
+  box-shadow:0 2px 26px #01f0b94e;
+  text-shadow:0 1px 4px #01f0b941;
+  margin:18px auto 12px auto;
+  animation: stampGlow 2.2s infinite alternate;
+}
+@keyframes stampGlow {
+  from { box-shadow:0 2px 16px #2cdddd33;}
+  to   { box-shadow:0 4px 30px #01f0b955;}
+}
+.receipt-footer {
+  font-size:1.05rem;
+  color: #155194;
+  text-align:center;
+  margin-top:15px;
+  font-weight:600;
+  letter-spacing:.03em;
+}
+.receipt-sheet .barcode {
+  filter: brightness(1.10) contrast(1.12);
+  border: 1.5px solid #4f8cff6d;
+}
+
+  .nav-links {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    text-align: center;
+    opacity: 0;
+    animation: slideInUp 0.8s ease-out 0.6s forwards;
+  }
+  .nav-links button {
+    background: none;
+    border: none;
+    color: #2999fa;
+    cursor: pointer;
+    margin: 0 10px;
+    font-weight: 600;
+    text-decoration: underline;
+    transition: all 0.3s ease;
+  }
+  .nav-links button:hover {
+    color: #2cdddd;
+    transform: translateY(-1px);
+  }
+  .form-box.admin-login {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    animation: floatIn 0.5s both;
+  }
+  .admin-dashboard {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    animation: floatIn 0.6s both;
+    position: relative;
+    z-index: 1;
+  }
+  .admin-dashboard h2 {
+    color: #183a79;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .admin-dashboard table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  .admin-dashboard th, .admin-dashboard td {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #dde5f0;
+    text-align: center;
+    color: #164174;
+  }
+  .admin-dashboard th {
+    background-color: #246fce;
+    color: white;
+  }
+  .admin-dashboard .logout-btn, .clear-btn {
+    display: inline-block;
+    margin: 20px 8px 0 8px;
+    padding: 0.75rem 2rem;
+    background: #d33a3a;
+    color: white;
+    width: 30%;
+    font-weight: bold;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .admin-dashboard .logout-btn:hover, .clear-btn:hover {
+    background: #a72929;
+  }
+</style>
+</head>
+<body>
+  <div style="position:absolute; left:-35px; top:-25px; width:110%; height:120%; z-index:0; pointer-events:none; border-radius:25px;
+background: radial-gradient(circle at 60% -20%, #48a6e9 0%, #ffffff00 75%);
+opacity: .13;"></div>
+
+ <!-- Fixed Courier-Themed Animated Background -->
+<div id="courier-animation-bg">
+  <svg viewBox="0 0 1440 400" preserveAspectRatio="xMidYMid slice">
+    <!-- Main Road Path -->
+    <path id="road" 
+          d="M-50,350 Q200,200 400,300 T800,250 Q1000,200 1200,280 Q1400,350 1600,300" 
+          class="road-path"/>
+    
+    <!-- Moving Vehicles -->
+    <g>
+      <rect x="-20" y="-15" width="40" height="30" rx="5" fill="#48a6e9" opacity="0.8"/>
+      <circle cx="-10" cy="10" r="6" fill="#333"/>
+      <circle cx="10" cy="10" r="6" fill="#333"/>
+      <animateMotion dur="12s" repeatCount="indefinite">
+        <mpath href="#road"/>
+      </animateMotion>
+    </g>
+    
+    <g>
+      <rect x="-15" y="-10" width="30" height="20" rx="3" fill="#2cdddd" opacity="0.8"/>
+      <circle cx="-8" cy="8" r="4" fill="#333"/>
+      <circle cx="8" cy="8" r="4" fill="#333"/>
+      <animateMotion dur="15s" repeatCount="indefinite" begin="2s">
+        <mpath href="#road"/>
+      </animateMotion>
+    </g>
+    
+    <g>
+      <rect x="-25" y="-12" width="50" height="24" rx="4" fill="#246fce" opacity="0.8"/>
+      <circle cx="-15" cy="10" r="5" fill="#333"/>
+      <circle cx="0" cy="10" r="5" fill="#333"/>
+      <circle cx="15" cy="10" r="5" fill="#333"/>
+      <animateMotion dur="18s" repeatCount="indefinite" begin="5s">
+        <mpath href="#road"/>
+      </animateMotion>
+    </g>
+    
+    <!-- Floating Elements -->
+    <g opacity="0.6">
+      <circle cx="200" cy="100" r="8" fill="#01f0b9">
+        <animate attributeName="cy" values="100;120;100" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="600" cy="150" r="6" fill="#2999fa">
+        <animate attributeName="cy" values="150;170;150" dur="4s" repeatCount="indefinite" begin="1s"/>
+      </circle>
+      <circle cx="1000" cy="80" r="10" fill="#94ffe3">
+        <animate attributeName="cy" values="80;100;80" dur="5s" repeatCount="indefinite" begin="2s"/>
+      </circle>
+    </g>
+    
+    <!-- Package Icons -->
+    <g opacity="0.5">
+      <rect x="150" y="320" width="20" height="20" rx="2" fill="#246fce">
+        <animate attributeName="y" values="320;340;320" dur="2s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="450" y="280" width="15" height="15" rx="2" fill="#2cdddd">
+        <animate attributeName="y" values="280;300;280" dur="2.5s" repeatCount="indefinite" begin="1s"/>
+      </rect>
+      <rect x="750" y="300" width="18" height="18" rx="2" fill="#01f0b9">
+        <animate attributeName="y" values="300;320;300" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+      </rect>
+      <rect x="1100" y="260" width="22" height="22" rx="3" fill="#48a6e9">
+        <animate attributeName="y" values="260;280;260" dur="2.8s" repeatCount="indefinite" begin="1.5s"/>
+      </rect>
+    </g>
+  </svg>
+</div>
+
+<section id="homeHero" class="container-wide">
+  <div class="hero-text">
+    <h1>Parcel Pilot</h1>
+    <p>Navigate Your Courier Smoothly — the fastest, easiest way to schedule and track your parcels.</p>
+    <button id="heroStartBtn">Get Started</button>
+  </div>
+  
+ <img src="c:\Users\USER\Downloads\WhatsApp Image 2025-08-06 at 12.40.31 PM.jpeg"
+     alt="Courier Delivery Illustration"
+     style="max-width:700px;width:80%;border-radius:16px;box-shadow:0 4px 24px #2999fa22;background:#eaf7fa; margin-left:80px;" />
+
+</section>
+
+<section id="featuresSection">
+  <h2>Why Choose Parcel Pilot?</h2>
+  <div class="features-grid">
+    <div class="feature-item"><div class="feature-icon">🚀</div><div class="feature-title">Fast Booking</div><div class="feature-desc">Schedule your parcel in seconds with live quotes from top providers.</div></div>
+    <div class="feature-item"><div class="feature-icon">📡</div><div class="feature-title">Realtime Tracking</div><div class="feature-desc">Get live updates on your parcel status at every stage.</div></div>
+    <div class="feature-item"><div class="feature-icon">📄</div><div class="feature-title">Downloadable Receipts</div><div class="feature-desc">Keep all your receipts and booking history at your fingertips.</div></div>
+    <div class="feature-item"><div class="feature-icon">💰</div><div class="feature-title">Best Rates</div><div class="feature-desc">Compare courier services and prices to get the best deal.</div></div>
+  </div>
+</section>
+
+<section id="aboutHowSection">
+  <div class="section-block" id="about">
+    <h3>About Parcel Pilot</h3>
+    <p>Parcel Pilot is designed to streamline your shipping needs with a user-friendly interface integrated with top courier providers, offering instant quotes and real-time tracking.</p>
+  </div>
+  <div class="section-block" id="howItWorks">
+    <h3>How It Works</h3>
+    <p>Sign up to book your courier by entering package details. Receive instant rate quotes, select the best courier, and track your shipment till delivery. Admins can monitor all bookings through a secured dashboard.</p>
+  </div>
+</section>
+
+<div id="mainAppContainer" style="display:none;">
+  <!-- Welcome Section -->
+  <div class="center-box" id="welcomeSection">
+    <div class="app-card">
+      <div class="big-logo">🛫</div>
+      <div class="welcome-title">Parcel Pilot</div>
+      <div class="welcome-desc">
+        Navigate Your Courier Smoothly.<br>
+        <ul style="text-align:left;display:inline-block;font-size:1rem;line-height:1.6em;margin:1rem 0 0 1.5rem;color:#323c53">
+          <li>Simple Booking, Live Quotes from Top Couriers</li>
+          <li>Realtime Tracking & Delivery Updates</li>
+          <li>Downloadable Receipts, Booking History</li>
+          <li>All-in-one, Free to use!</li>
+        </ul>
+      </div>
+      <div class="nav-links">
+        <button id="navToSignup">Sign Up</button> |
+        <button id="navToLoginPage">Login</button> |
+        <button id="navToAdminLogin">Admin Login</button>
+      </div>
+    </div>
+  </div>
+   <!-- Enhanced Signup Section -->
+  <div class="center-box hidden" id="signupSection">
+    <div class="signup-card">
+      <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+      </div>
+      
+      <h2 class="signup-title">Join Parcel Pilot</h2>
+      <p class="signup-subtitle">Create your account and start shipping smarter today</p>
+      
+      <form id="signupForm">
+        <div class="form-group">
+          <div class="input-icon">👤</div>
+          <input type="text" id="username" class="enhanced-input" placeholder="Enter your username" required />
+        </div>
+        
+        <div class="form-group">
+          <div class="input-icon">📧</div>
+          <input type="email" id="email" class="enhanced-input" placeholder="Enter your email" required />
+        </div>
+        
+        <div class="form-group">
+          <div class="input-icon">🔒</div>
+          <input type="password" id="password" class="enhanced-input" placeholder="Create a password" required />
+        </div>
+        
+        <button type="submit" class="signup-btn">Create Account</button>
+      </form>
+      
+      <div class="nav-links">
+        <button id="signupBackToWelcome">← Back to Home</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Section -->
+  <div class="form-box hidden" id="loginSection">
+    <h2>User Login</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <div class="nav-links" style="margin-top:-0.5rem;">
+      <button id="loginBackToWelcome">Back to Parcel Pilot Home</button>
+    </div>
+  </div>
+
+
+  <!-- Login Section -->
+  <div class="form-box hidden" id="loginSection">
+    <h2>User Login</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <div class="nav-links" style="margin-top:-0.5rem;">
+      <button id="loginBackToWelcome">Back to Parcel Pilot Home</button>
+    </div>
+  </div>
+
+  <!-- Admin Login Section -->
+  <div class="form-box admin-login hidden" id="adminLoginSection">
+    <h2>Admin Login</h2>
+    <form id="adminLoginForm">
+      <input type="password" id="adminPass" placeholder="Enter Admin Password" required autocomplete="off" />
+      <button type="submit">Login</button>
+    </form>
+    <div class="nav-links" style="margin-top:-0.5rem;">
+      <button id="adminBackToWelcome">Back to Parcel Pilot Home</button>
+    </div>
+  </div>
+
+  <!-- Courier Booking Section -->
+  <div class="container hidden" id="courierSection">
+    <h1>🛫 Parcel Pilot</h1>
+    <form id="package-form">
+      <label>Sender Name:</label><input type="text" id="senderName" required>
+      <label>Sender Contact No:</label>
+      <input
+        type="tel"
+        id="senderContact"
+        maxlength="10"
+        pattern="\d{10}"
+        required
+        inputmode="numeric"
+        autocomplete="off"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"
+      />
+      <label>Receiver Name:</label><input type="text" id="receiverName" required>
+      <label>Receiver Contact No:</label>
+      <input
+        type="tel"
+        id="receiverContact"
+        maxlength="10"
+        pattern="\d{10}"
+        required
+        inputmode="numeric"
+        autocomplete="off"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"
+      />
+      <label>From:</label><input type="text" id="from" required>
+      <label>To:</label><input type="text" id="to" required>
+      <label>Weight (kg):</label><input type="number" id="weight" min="0.1" step="0.1" required>
+      <label>Delivery Type:</label>
+      <select id="type">
+        <option value="standard">Standard</option>
+        <option value="express">Express</option>
+      </select>
+      <button type="submit">Get Quotes</button>
+    </form>
+    <table id="results" hidden>
+      <thead><tr><th>Courier</th><th>ETA</th><th>Rate</th><th>Select</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="track-section">
+      <h2>🔍 Track Your Parcel</h2>
+      <input type="text" id="trackInput" placeholder="Enter Tracking ID">
+      <button onclick="trackOrder()">Track</button>
+      <div id="trackResult"></div>
+    </div>
+    <div class="status-box" id="statusBox" style="display:none">
+      <h2>🛫 Delivery Progress</h2>
+      <div id="step1" class="status-step pending">1. Booked</div>
+      <div id="step2" class="status-step pending">2. In Transit</div>
+      <div id="step3" class="status-step pending">3. Delivered</div>
+    </div>
+    <div class="history-box">
+      <h2>📜 Booking History</h2>
+      <ul id="historyList"></ul>
+    </div>
+    <div style="text-align: center; margin-top: 2rem;">
+      <button onclick="downloadReceipt()">📄 Download Last Booking Receipt</button>
+    </div>
+  </div>
+
+  <div id="animatedReceipt" class="receipt-sheet hidden">
+    <div class="receipt-header" style="text-align:center;">
+      <img class="receipt-logo" id="receiptLogo" src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Blue_Dart_Express_logo.svg" alt="Courier Logo"/>
+      <div class="receipt-title" id="receiptBrand">Parcel Pilot</div>
+      <div style="font-size:1.02rem;color:#1e90e8;margin-top:2px;">Navigate Your Courier Smoothly</div>
+    </div>
+    <div class="barcode" id="receiptBarcode"></div>
+    <hr class="receipt-divider">
+    <table class="receipt-table">
+      <tr><td class="label">Tracking ID:</td><td class="value" id="rTrack"></td></tr>
+      <tr><td class="label">Date:</td><td class="value" id="rDate"></td></tr>
+      <tr><td class="label">From:</td><td class="value" id="rFrom"></td></tr>
+      <tr><td class="label">To:</td><td class="value" id="rTo"></td></tr>
+      <tr><td class="label">Courier Service:</td><td class="value" id="rCourier"></td></tr>
+      <tr><td class="label">Delivery Type:</td><td class="value" id="rType"></td></tr>
+      <tr><td class="label">Status:</td><td class="value" id="rStatus"></td></tr>
+      <tr><td class="label">Cost Paid:</td><td class="value">₹<span id="rCost"></span></td></tr>
+    </table>
+    <div class="receipt-detailbox">
+      <div><span class="label">Sender:</span> <span id="rSenderName"></span> (<span id="rSenderContact"></span>)</div>
+      <div><span class="label">Receiver:</span> <span id="rReceiverName"></span> (<span id="rReceiverContact"></span>)</div>
+    </div>
+    <hr class="receipt-divider">
+    <div class="animated-stamp">PAID</div>
+    <div class="receipt-footer">Thank you for choosing Parcel Pilot.<br>For queries: support@parcelpilot.com</div>
+  </div>
+
+  <div id="adminDashboard" class="admin-dashboard hidden">
+    <h2>Parcel Pilot Admin Dashboard</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Tracking ID</th><th>Sender</th><th>Receiver</th><th>From</th><th>To</th>
+          <th>Courier</th><th>Delivery Type</th><th>Status</th><th>Cost (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="adminDataBody"></tbody>
+    </table>
+    <div style="text-align:center;">
+      <button class="clear-btn" id="clearDataBtn">Clear All Bookings</button>
+      <button class="logout-btn" id="adminLogoutBtn">Logout</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Navigation and fade-in logic
+  document.getElementById('heroStartBtn').addEventListener('click', () => {
+    document.getElementById('homeHero').classList.add('fade-out');
+    document.getElementById('featuresSection').classList.add('fade-out');
+    document.getElementById('aboutHowSection').classList.add('fade-out');
+    setTimeout(() => {
+      document.getElementById('homeHero').style.display = 'none';
+      document.getElementById('featuresSection').style.display = 'none';
+      document.getElementById('aboutHowSection').style.display = 'none';
+      document.getElementById('mainAppContainer').style.display = 'block';
+      document.getElementById('welcomeSection').classList.remove('hidden');
+      document.getElementById('signupSection').classList.add('hidden');
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('adminLoginSection').classList.add('hidden');
+      document.getElementById('courierSection').classList.add('hidden');
+      document.getElementById('adminDashboard').classList.add('hidden');
+    }, 500);
+  });
+
+  document.getElementById('navToSignup').addEventListener('click', () => {
+    document.getElementById('welcomeSection').classList.add('hidden');
+    document.getElementById('signupSection').classList.remove('hidden');
+  });
+
+  document.getElementById('navToAdminLogin').addEventListener('click', () => {
+    document.getElementById('welcomeSection').classList.add('hidden');
+    document.getElementById('adminLoginSection').classList.remove('hidden');
+  });
+
+  document.getElementById('navToLoginPage').addEventListener('click', function() {
+    document.getElementById('welcomeSection').classList.add('hidden');
+    document.getElementById('loginSection').classList.remove('hidden');
+    document.getElementById('loginForm').reset();
+  });
+
+  document.getElementById('signupBackToWelcome').addEventListener('click', () => {
+    document.getElementById('signupSection').classList.add('hidden');
+    document.getElementById('welcomeSection').classList.remove('hidden');
+  });
+  document.getElementById('loginBackToWelcome').addEventListener('click', function() {
+    document.getElementById('loginSection').classList.add('hidden');
+    document.getElementById('welcomeSection').classList.remove('hidden');
+  });
+  document.getElementById('adminBackToWelcome').addEventListener('click', () => {
+    document.getElementById('adminLoginSection').classList.add('hidden');
+    document.getElementById('welcomeSection').classList.remove('hidden');
+  });
+
+  // User Registration/Login logic
+  document.getElementById('signupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const user = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const pass = document.getElementById('password').value;
+    if (user && email && pass) {
+      let users = JSON.parse(localStorage.getItem('users') || '[]');
+      if(users.find(u => u.email === email)) {
+        alert("User already exists, please login.");
+        return;
+      }
+      users.push({username: user, email: email, password: pass});
+      localStorage.setItem('users', JSON.stringify(users));
+      alert("Signup Successful!");
+      document.getElementById('signupSection').classList.add('hidden');
+      document.getElementById('courierSection').classList.remove('hidden');
+    }
+  });
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPassword').value;
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    let user = users.find(u => u.email === email && u.password === pass);
+    if(user) {
+      alert("Login successful. Welcome " + user.username + "!");
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('courierSection').classList.remove('hidden');
+    } else {
+      alert("Invalid credentials or user does not exist. Please sign up first.");
+    }
+  });
+
+  // Admin logic from your original code (unchanged)
+  const adminLoginForm = document.getElementById('adminLoginForm');
+  const adminDashboard = document.getElementById('adminDashboard');
+  const adminDataBody = document.getElementById('adminDataBody');
+  const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+  const clearDataBtn = document.getElementById('clearDataBtn');
+  const ADMIN_PASSWORD = "admin123";
+  adminLoginForm.addEventListener('submit', e => {
+    e.preventDefault();
+    if (document.getElementById('adminPass').value.trim() === ADMIN_PASSWORD) {
+      document.getElementById('adminLoginSection').classList.add('hidden');
+      adminDashboard.classList.remove('hidden');
+      loadTrackingData();
+    } else {
+      alert('Incorrect password');
+      document.getElementById('adminPass').value = '';
+    }
+  });
+  function loadTrackingData() {
+    const data = JSON.parse(localStorage.getItem('trackingData') || '{}');
+    adminDataBody.innerHTML = '';
+    if(Object.keys(data).length === 0) {
+      adminDataBody.innerHTML = `<tr><td colspan="9" style="color:#888;">No bookings available</td></tr>`;
+      return;
+    }
+    Object.values(data).forEach(entry => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${entry.info.id || '-'}</td>
+        <td>${entry.info.senderName}</td>
+        <td>${entry.info.receiverName}</td>
+        <td>${entry.info.from}</td>
+        <td>${entry.info.to}</td>
+        <td>${entry.info.courier}</td>
+        <td>${entry.info.type}</td>
+        <td>${entry.status}</td>
+        <td>₹${entry.info.cost}</td>
+      `;
+      adminDataBody.appendChild(tr);
+    });
+  }
+  adminLogoutBtn.addEventListener('click', () => {
+    adminDashboard.classList.add('hidden');
+    document.getElementById('adminLoginSection').classList.remove('hidden');
+    adminLoginForm.reset();
+  });
+  clearDataBtn.addEventListener('click', () => {
+    if(confirm('Are you sure you want to delete ALL bookings? This action cannot be undone.')) {
+      localStorage.removeItem('trackingData');
+      loadTrackingData();
+      alert('All booking data cleared.');
+    }
+  });
+
+  // Booking and tracking logic
+  let trackingData = JSON.parse(localStorage.getItem('trackingData') || '{}');
+  let lastBooking = {};
+  function generateTrackingID() {
+    return 'TRK' + Math.floor(Math.random() * 1000000);
+  }
+  function updateStatus(step, finalized) {
+    ['step1','step2','step3'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (finalized && i <= step) el.className = 'status-step done';
+      else if (i < step) el.className = 'status-step done';
+      else if (i === step) el.className = 'status-step active';
+      else el.className = 'status-step pending';
+    });
+  }
+  function simulateDelivery(id) {
+    updateStatus(0, false);
+    setTimeout(() => {
+      trackingData[id].status = 'In Transit';
+      trackingData[id].updates.push('Package left warehouse.');
+      localStorage.setItem('trackingData', JSON.stringify(trackingData));
+      updateStatus(1, false);
+      setTimeout(() => {
+        trackingData[id].status = 'Delivered';
+        trackingData[id].updates.push('Package delivered successfully.');
+        localStorage.setItem('trackingData', JSON.stringify(trackingData));
+        updateStatus(2, false);
+        setTimeout(() => {
+          updateStatus(2, true);
+        }, 1000);
+      }, 2000);
+    }, 2000);
+  }
+  function trackOrder() {
+    const id = document.getElementById('trackInput').value.trim();
+    const result = document.getElementById('trackResult');
+    const data = trackingData[id];
+    if (!data) {
+      result.innerHTML = '<p style="color:red">Invalid Tracking ID</p>';
+      document.getElementById('statusBox').style.display = 'none';
+      return;
+    }
+    let html = `<p><strong>Tracking ID:</strong> ${id}<br><strong>Status:</strong> ${data.status}</p>`;
+    html += `<p><strong>From:</strong> ${data.info.from} → <strong>To:</strong> ${data.info.to}<br><strong>Courier:</strong> ${data.info.courier}<br><strong>Type:</strong> ${data.info.type}<br><strong>Cost:</strong> ₹${data.info.cost}</p>`;
+    html += '<ul>' + data.updates.map(u => `<li>${u}</li>`).join('') + '</ul>';
+    result.innerHTML = html;
+    document.getElementById('statusBox').style.display = 'block';
+    if (data.status === 'Booked') simulateDelivery(id);
+    else if (data.status === 'In Transit') updateStatus(1, false);
+    else if (data.status === 'Delivered') updateStatus(2, true);
+  }
+  function downloadReceipt() {
+    const r = lastBooking;
+    if(!r) return alert("No booking yet.");
+    document.getElementById('receiptBrand').textContent = 'Parcel Pilot';
+    document.getElementById('receiptLogo').src = "https://cdn-icons-png.flaticon.com/512/743/743477.png";
+    document.getElementById('receiptBarcode').style.backgroundImage = `url(https://api.qrserver.com/v1/create-qr-code/?size=120x30&data=${encodeURIComponent(r.id||'PARCELPILOT')})`;
+    document.getElementById('rTrack').textContent = r.id;
+    document.getElementById('rFrom').textContent = r.from;
+    document.getElementById('rTo').textContent = r.to;
+    document.getElementById('rCourier').textContent = r.courier;
+    document.getElementById('rType').textContent = r.type;
+    document.getElementById('rStatus').textContent = "Booked";
+    document.getElementById('rCost').textContent = r.cost;
+    document.getElementById('rSenderName').textContent = r.senderName;
+    document.getElementById('rSenderContact').textContent = r.senderContact;
+    document.getElementById('rReceiverName').textContent = r.receiverName;
+    document.getElementById('rReceiverContact').textContent = r.receiverContact;
+    document.getElementById('rDate').textContent = new Date().toLocaleString();
+    document.querySelector('#animatedReceipt .receipt-footer').innerHTML = "Thank you for choosing Parcel Pilot.<br>For queries: support@parcelpilot.com";
+    document.getElementById("animatedReceipt").classList.remove("hidden");
+    setTimeout(() => {
+      html2pdf().from(document.getElementById("animatedReceipt")).save("ParcelPilot_Receipt.pdf").then(()=>{
+        document.getElementById("animatedReceipt").classList.add("hidden");
+      });
+    }, 200);
+  }
+  function addToHistory(id, info) {
+    const li = document.createElement('li');
+    li.textContent = `${info.from} to ${info.to} via ${info.courier} [${info.type}] - ₹${info.cost} (ID: ${id})`;
+    document.getElementById('historyList').appendChild(li);
+  }
+
+  const couriers = [
+    { name: 'Blue Dart', ratePerKg: 50, expressFee: 200, eta: { standard: 3, express: 1 } },
+    { name: 'Delhivery', ratePerKg: 45, expressFee: 150, eta: { standard: 4, express: 2 } },
+    { name: 'FedEx', ratePerKg: 60, expressFee: 250, eta: { standard: 5, express: 1 } }
+  ];
+
+  // Contact number JS validation for booking (extra, on submit)
+  document.getElementById('package-form').addEventListener('submit', function(e) {
+    const sn = document.getElementById('senderContact').value.trim();
+    const rn = document.getElementById('receiverContact').value.trim();
+    if(sn.length != 10 || rn.length != 10 || !/^\d{10}$/.test(sn) || !/^\d{10}$/.test(rn)) {
+      alert("Please enter valid 10 digit numbers for both contacts.");
+      e.preventDefault();
+      return false;
+    }
+    // Booking logic continues below...
+  }, true);
+
+  document.getElementById('package-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const tbody = document.querySelector('#results tbody');
+    tbody.innerHTML = '';
+    document.getElementById('results').hidden = false;
+    const from = document.getElementById('from').value;
+    const to = document.getElementById('to').value;
+    const senderName = document.getElementById('senderName').value;
+    const senderContact = document.getElementById('senderContact').value;
+    const receiverName = document.getElementById('receiverName').value;
+    const receiverContact = document.getElementById('receiverContact').value;
+    const weight = parseFloat(document.getElementById('weight').value);
+    const type = document.getElementById('type').value;
+    couriers.forEach(courier => {
+      const cost = courier.ratePerKg * weight + (type === 'express' ? courier.expressFee : 0);
+      const eta = courier.eta[type];
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${courier.name}</td><td>${eta} days</td><td>₹${cost}</td>`;
+      const selectTd = document.createElement('td');
+      const selectBtn = document.createElement('button');
+      selectBtn.textContent = 'Book';
+      selectBtn.onclick = () => {
+        const id = generateTrackingID();
+        const info = {
+          id,
+          from,
+          to,
+          courier: courier.name,
+          type,
+          cost,
+          senderName,
+          senderContact,
+          receiverName,
+          receiverContact
+        };
+        trackingData[id] = { status: 'Booked', updates: ['Package booked.'], info };
+        localStorage.setItem('trackingData', JSON.stringify(trackingData));
+        lastBooking = { id, ...info };
+        addToHistory(id, info);
+        alert(`Parcel booked!\nTracking ID: ${id}`);
+        fetch("https://sheetdb.io/api/v1/6z43sodrqaiqy", {
+          method: "POST",
+          body: JSON.stringify(info),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(res => res.text())
+        .then(response => {
+          alert("Thanks! Your response was saved.");
+          form.reset();
+        })
+        .catch(err => {
+          console.error("Error writing to Google Sheets:", err);
+        });
+      };
+      selectTd.appendChild(selectBtn);
+      row.appendChild(selectTd);
+      tbody.appendChild(row);
+    });
+  });
+</script>
+</body>
+</html>
